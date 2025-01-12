@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming Crop Recommendation</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🌾 Smart Farming Crop Recommendation 🌾</h1>
+        <input type="text" id="location" placeholder="Enter your location">
+        <button onclick="getRecommendation()">Get Recommendation</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function getRecommendation() {
+            const location = document.getElementById('location').value;
+            fetch('/recommend_crop', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ location })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('result');
+                if (data.recommended_crops && data.recommended_crops.length) {
+                    resultDiv.innerHTML = `<h3>Recommended Crops:</h3><ul>${data.recommended_crops.map(crop => `<li>${crop}</li>`).join('')}</ul>`;
+                } else {
+                    resultDiv.innerHTML = `<p>No suitable crops found for the given location.</p>`;
+                }
+            })
+            .catch(() => {
+                document.getElementById('result').innerHTML = `<p>Error fetching recommendation.</p>`;
+            });
+        }
+    </script>
+</body>
+</html>
