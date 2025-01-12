@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather and Soil Information</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    input {
+      padding: 10px;
+      width: calc(100% - 120px);
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      margin-left: 10px;
+    }
+    #results {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background: #f9f9f9;
+    }
+    h3 {
+      margin-bottom: 10px;
+    }
+    p {
+      margin: 5px 0;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Weather and Soil Information</h1>
+
+  <label for="city">Enter City Name:</label>
+  <input type="text" id="city" placeholder="Enter city" />
+  <button onclick="fetchData()">Get Info</button>
+
+  <div id="results"></div>
+
+  <script>
+    async function fetchData() {
+      const city = document.getElementById('city').value.trim();
+      if (!city) {
+        alert('Please enter a city!');
+        return;
+      }
+
+      document.getElementById('results').innerHTML = '<p>Loading...</p>';
+
+      try {
+        const response = await fetch(`http://localhost:3000/api/getCropSuggestions?city=${city}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data. Please try again.');
+        }
+
+        const data = await response.json();
+
+        if (data.error) {
+          document.getElementById('results').innerHTML = `<p class="error">${data.error}</p>`;
+        } else {
+          const { weather, soil, location } = data;
+
+          let resultsHtml = `<h3>Location: ${city}</h3>`;
+          resultsHtml += `<p><strong>Latitude:</strong> ${location.lat}</p>`;
+          resultsHtml += `<p><strong>Longitude:</strong> ${location.lon}</p>`;
+
+          resultsHtml += `<h3>Weather</h3>`;
+          resultsHtml += `
+            <p><strong>Temperature:</strong> ${weather.main.temp} °C</p>
+            <p><strong>Condition:</strong> ${weather.weather[0].description}</p>
+            <p><strong>Humidity:</strong> ${weather.main.humidity}%</p>
+          `;
+
+          if (soil) {
+            resultsHtml += `<h3>Soil Information</h3>`;
+            resultsHtml += `
+              <p><strong>Parent Soil:</strong> ${soil.parent_soil || 'N/A'}</p>
+              <p><strong>pH:</strong> ${soil.ph || 'N/A'}</p>
+              <p><strong>Clay:</strong> ${soil.clay || 'N/A'}</p>
+              <p><strong>Organic Matter:</strong> ${soil.organic_matter || 'N/A'}</p>
+              <p><strong>Total Nitrogen:</strong> ${soil.total_nitrogen || 'N/A'}</p>
+            `;
+          } else {
+            resultsHtml += `<p class="error">Soil data not available for this location.</p>`;
+          }
+
+          document.getElementById('results').innerHTML = resultsHtml;
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        document.getElementById('results').innerHTML = `<p class="error">An error occurred: ${error.message}</p>`;
+      }
+    }
+  </script>
+
+</body>
+</html>
