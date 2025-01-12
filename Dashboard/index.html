@@ -394,17 +394,19 @@
         <section
           class="grid md:grid-cols-2 xl:grid-cols-4 xl:grid-rows-3 xl:grid-flow-col gap-6"
         >
-          <span class="inline-block text-2xl font-bold">Moisture Level</span>
-          <div
-            class="meter-container bg-white rounded-md p-4 shadow-md relative"
-          >
-            <canvas
-              id="canvas"
-              height="175"
-              width="350"
-              class="m-auto"
-            ></canvas>
-            <p class="text">0%</p>
+          <div class="flex items-center p-8 bg-white shadow rounded-lg">
+            <span class="inline-block text-2xl font-bold">Moisture Level</span>
+            <div
+              class="meter-container bg-white rounded-md p-4 shadow-md relative"
+            >
+              <canvas
+                id="canvas"
+                height="175"
+                width="350"
+                class="m-auto"
+              ></canvas>
+              <p class="text">0%</p>
+            </div>
           </div>
         </section>
         <script src="script.js"></script>
