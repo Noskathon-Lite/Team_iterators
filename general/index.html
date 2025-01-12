@@ -1,113 +1,174 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather and Soil Information</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
-    }
-    input {
-      padding: 10px;
-      width: calc(100% - 120px);
-      box-sizing: border-box;
-    }
-    button {
-      padding: 10px 20px;
-      margin-left: 10px;
-    }
-    #results {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background: #f9f9f9;
-    }
-    h3 {
-      margin-bottom: 10px;
-    }
-    p {
-      margin: 5px 0;
-    }
-    .error {
-      color: red;
-      font-weight: bold;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather and Soil Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 12px;
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #results {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #ffffff;
+        }
+
+        .section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .error {
+            color: #dc3545;
+            padding: 10px;
+            background-color: #f8d7da;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Crop Recommendation System</h1>
+        
+        <div class="input-group">
+            <input type="text" id="city" placeholder="Enter city name" />
+            <button onclick="fetchData()">Get Recommendations</button>
+        </div>
 
-  <h1>Weather and Soil Information</h1>
+        <div id="results"></div>
+    </div>
 
-  <label for="city">Enter City Name:</label>
-  <input type="text" id="city" placeholder="Enter city" />
-  <button onclick="fetchData()">Get Info</button>
+    <script>
+        async function fetchData() {
+            const city = document.getElementById('city').value.trim();
+            const resultsDiv = document.getElementById('results');
 
-  <div id="results"></div>
+            if (!city) {
+                resultsDiv.innerHTML = '<div class="error">Please enter a city name!</div>';
+                return;
+            }
 
-  <script>
-    async function fetchData() {
-      const city = document.getElementById('city').value.trim();
-      if (!city) {
-        alert('Please enter a city!');
-        return;
-      }
+            resultsDiv.innerHTML = '<div class="loading">Loading data...</div>';
 
-      document.getElementById('results').innerHTML = '<p>Loading...</p>';
+            try {
+                const response = await fetch(`http://localhost:3000/api/getCropSuggestions?city=${encodeURIComponent(city)}`);
+                const data = await response.json();
 
-      try {
-        // Send request to backend API with city parameter
-        const response = await fetch(`http://localhost:3000/api/getCropSuggestions?city=${city}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch data. Please try again.');
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                let html = '';
+
+                // Location Section
+                html += `
+                    <div class="section">
+                        <h3>📍 Location Information</h3>
+                        <p><strong>City:</strong> ${city}</p>
+                        <p><strong>Coordinates:</strong> ${data.location.lat.toFixed(4)}°N, ${data.location.lon.toFixed(4)}°E</p>
+                    </div>
+                `;
+
+                // Weather Section
+                html += `
+                    <div class="section">
+                        <h3>🌤️ Weather Conditions</h3>
+                        <p><strong>Temperature:</strong> ${data.weather.main.temp.toFixed(1)}°C</p>
+                        <p><strong>Weather:</strong> ${data.weather.weather[0].description}</p>
+                        <p><strong>Humidity:</strong> ${data.weather.main.humidity}%</p>
+                        <p><strong>Wind Speed:</strong> ${data.weather.wind.speed} m/s</p>
+                    </div>
+                `;
+
+                // Soil Section
+                if (data.soil) {
+                    html += `
+                        <div class="section">
+                            <h3>🌱 Soil Information</h3>
+                            <p><strong>pH Level:</strong> ${data.soil.ph || 'N/A'}</p>
+                            <p><strong>Potassium (K):</strong> ${data.soil.nutrients ? data.soil.nutrients.K : 'N/A'} mg/kg</p>
+                        </div>
+                    `;
+                }
+
+                // Crop Recommendation Section
+                if (data.predictedCrop) {
+                    html += `
+                        <div class="section">
+                            <h3>🌾 Crop Recommendation</h3>
+                            <p><strong>Recommended Crop:</strong> ${data.predictedCrop}</p>
+                        </div>
+                    `;
+                }
+
+                resultsDiv.innerHTML = html;
+
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> ${error.message || 'Failed to fetch data. Please try again.'}
+                    </div>
+                `;
+            }
         }
-
-        const data = await response.json();
-
-        if (data.error) {
-          document.getElementById('results').innerHTML = `<p class="error">${data.error}</p>`;
-        } else {
-          // Display the location, weather, and soil data
-          let resultsHtml = `<h3>Location: ${city}</h3>`;
-          resultsHtml += `<p><strong>Latitude:</strong> ${data.location.lat}</p>`;
-          resultsHtml += `<p><strong>Longitude:</strong> ${data.location.lon}</p>`;
-
-          resultsHtml += `<h3>Weather</h3>`;
-          resultsHtml += `
-            <p><strong>Temperature:</strong> ${data.weather.main.temp} °C</p>
-            <p><strong>Condition:</strong> ${data.weather.weather[0].description}</p>
-            <p><strong>Humidity:</strong> ${data.weather.main.humidity}%</p>
-          `;
-
-          if (data.soil) {
-            resultsHtml += `<h3>Soil Information</h3>`;
-            resultsHtml += `
-              <p><strong>pH:</strong> ${data.soil.ph || 'N/A'}</p>
-              <p><strong>Potassium:</strong> ${data.soil.nutrients ? data.soil.nutrients.K : 'N/A'}</p>
-            `;
-          } else {
-            resultsHtml += `<p class="error">Soil data not available for this location.</p>`;
-          }
-
-          // Add crop suggestion to the result
-          if (data.predictedCrop) {
-            resultsHtml += `<h3>Suggested Crop</h3>`;
-            resultsHtml += `<p><strong>Recommended Crop:</strong> ${data.predictedCrop}</p>`;
-          }
-
-          document.getElementById('results').innerHTML = resultsHtml;
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        document.getElementById('results').innerHTML = `<p class="error">An error occurred: ${error.message}</p>`;
-      }
-    }
-  </script>
-
+    </script>
 </body>
 </html>
