@@ -12,6 +12,9 @@ canvas {
   top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .meter-container {
@@ -19,5 +22,13 @@ canvas {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    height: 180px;
+    height: 200px;
   }
+
+#moisture_level{
+    position: relative;
+    top: -90px;
+    left: -10px;
+    z-index: 1;
+    margin-bottom: 30px;
+}

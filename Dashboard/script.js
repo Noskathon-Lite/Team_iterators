@@ -1,5 +1,5 @@
 //Changeeeeeee
-let meterValue = 10; 
+let meterValue = 90; 
 
 let totalRot = ((meterValue / 100) * 180 * Math.PI) / 180;
 
