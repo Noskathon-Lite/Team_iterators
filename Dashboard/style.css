@@ -32,3 +32,10 @@ canvas {
     z-index: 1;
     margin-bottom: 30px;
 }
+
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+    .meter-container {
+      width: 400px; /* Increase the width for laptop screens */
+      padding: 16px; /* Adjust padding if needed */
+    }
+  }
