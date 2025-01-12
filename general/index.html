@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Weather and Soil Information</title>
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -60,6 +61,7 @@
       document.getElementById('results').innerHTML = '<p>Loading...</p>';
 
       try {
+        // Send request to backend API with city parameter
         const response = await fetch(`http://localhost:3000/api/getCropSuggestions?city=${city}`);
         if (!response.ok) {
           throw new Error('Failed to fetch data. Please try again.');
@@ -70,30 +72,32 @@
         if (data.error) {
           document.getElementById('results').innerHTML = `<p class="error">${data.error}</p>`;
         } else {
-          const { weather, soil, location } = data;
-
+          // Display the location, weather, and soil data
           let resultsHtml = `<h3>Location: ${city}</h3>`;
-          resultsHtml += `<p><strong>Latitude:</strong> ${location.lat}</p>`;
-          resultsHtml += `<p><strong>Longitude:</strong> ${location.lon}</p>`;
+          resultsHtml += `<p><strong>Latitude:</strong> ${data.location.lat}</p>`;
+          resultsHtml += `<p><strong>Longitude:</strong> ${data.location.lon}</p>`;
 
           resultsHtml += `<h3>Weather</h3>`;
           resultsHtml += `
-            <p><strong>Temperature:</strong> ${weather.main.temp} °C</p>
-            <p><strong>Condition:</strong> ${weather.weather[0].description}</p>
-            <p><strong>Humidity:</strong> ${weather.main.humidity}%</p>
+            <p><strong>Temperature:</strong> ${data.weather.main.temp} °C</p>
+            <p><strong>Condition:</strong> ${data.weather.weather[0].description}</p>
+            <p><strong>Humidity:</strong> ${data.weather.main.humidity}%</p>
           `;
 
-          if (soil) {
+          if (data.soil) {
             resultsHtml += `<h3>Soil Information</h3>`;
             resultsHtml += `
-              <p><strong>Parent Soil:</strong> ${soil.parent_soil || 'N/A'}</p>
-              <p><strong>pH:</strong> ${soil.ph || 'N/A'}</p>
-              <p><strong>Clay:</strong> ${soil.clay || 'N/A'}</p>
-              <p><strong>Organic Matter:</strong> ${soil.organic_matter || 'N/A'}</p>
-              <p><strong>Total Nitrogen:</strong> ${soil.total_nitrogen || 'N/A'}</p>
+              <p><strong>pH:</strong> ${data.soil.ph || 'N/A'}</p>
+              <p><strong>Potassium:</strong> ${data.soil.nutrients ? data.soil.nutrients.K : 'N/A'}</p>
             `;
           } else {
             resultsHtml += `<p class="error">Soil data not available for this location.</p>`;
+          }
+
+          // Add crop suggestion to the result
+          if (data.predictedCrop) {
+            resultsHtml += `<h3>Suggested Crop</h3>`;
+            resultsHtml += `<p><strong>Recommended Crop:</strong> ${data.predictedCrop}</p>`;
           }
 
           document.getElementById('results').innerHTML = resultsHtml;
