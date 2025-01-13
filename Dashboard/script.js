@@ -42,22 +42,22 @@ function updateGauge(selector, value) {
 }
 
 // Temperature Display
-function updateTemperature(value, unit = 'Celsius') {
-    const display = document.querySelector('.temperature-value');
-    const unitDisplay = document.querySelector('.temperature-unit');
-    display.textContent = `${value}°`;
-    unitDisplay.textContent = unit;
-}
+// function updateTemperature(value, unit = 'Celsius') {
+//     const display = document.querySelector('.temperature-value');
+//     const unitDisplay = document.querySelector('.temperature-unit');
+//     display.textContent = `${value}°`;
+//     unitDisplay.textContent = unit;
+// }
 
 // Historical Data
-function updateHistoricalData(cardSelector, data) {
-    const historicalSection = document.querySelector(`${cardSelector} .historical-data`);
-    if (historicalSection && data) {
-        historicalSection.innerHTML = Object.entries(data)
-            .map(([time, value]) => `<p>${time}: ${value}%</p>`)
-            .join('');
-    }
-}
+// function updateHistoricalData(cardSelector, data) {
+//     const historicalSection = document.querySelector(`${cardSelector} .historical-data`);
+//     if (historicalSection && data) {
+//         historicalSection.innerHTML = Object.entries(data)
+//             .map(([time, value]) => `<p>${time}: ${value}%</p>`)
+//             .join('');
+//     }
+// }
 
 // Notification System
 function initializeNotifications() {
@@ -71,39 +71,39 @@ function initializeNotifications() {
 }
 
 // Data Refresh
-function refreshDashboardData() {
-    // Simulate data updates
-    updateGauge('.metric-card:nth-child(1)', 90); // Moisture
-    updateGauge('.metric-card:nth-child(2)', 75); // Humidity
-    updateTemperature(24);
+// function refreshDashboardData() {
+//     // Simulate data updates
+//     updateGauge('.metric-card:nth-child(1)', 90); // Moisture
+//     updateGauge('.metric-card:nth-child(2)', 75); // Humidity
+//     updateTemperature(24);
     
-    const historicalData = {
-        'Last hour': '88',
-        '6 hours ago': '85',
-        '24 hours ago': '92'
-    };
-    updateHistoricalData('.metric-card:nth-child(1)', historicalData);
-}
+//     const historicalData = {
+//         'Last hour': '88',
+//         '6 hours ago': '85',
+//         '24 hours ago': '92'
+//     };
+//     updateHistoricalData('.metric-card:nth-child(1)', historicalData);
+// }
 
 // Real-time Updates
-function startRealTimeUpdates() {
-    // Simulate real-time data updates every 30 seconds
-    setInterval(() => {
-        const randomMoisture = 85 + Math.random() * 10;
-        const randomHumidity = 70 + Math.random() * 10;
-        const randomTemp = 22 + Math.random() * 4;
+// function startRealTimeUpdates() {
+//     // Simulate real-time data updates every 30 seconds
+//     setInterval(() => {
+//         const randomMoisture = 85 + Math.random() * 10;
+//         const randomHumidity = 70 + Math.random() * 10;
+//         const randomTemp = 22 + Math.random() * 4;
         
-        updateGauge('.metric-card:nth-child(1)', Math.round(randomMoisture));
-        updateGauge('.metric-card:nth-child(2)', Math.round(randomHumidity));
-        updateTemperature(Math.round(randomTemp * 10) / 10);
-    }, 30000);
-}
+//         updateGauge('.metric-card:nth-child(1)', Math.round(randomMoisture));
+//         updateGauge('.metric-card:nth-child(2)', Math.round(randomHumidity));
+//         updateTemperature(Math.round(randomTemp * 10) / 10);
+//     }, 30000);
+// }
 
 // Error Handling
-function handleError(error, context) {
-    console.error(`Error in ${context}:`, error);
-    // Implement error notification system here
-}
+// function handleError(error, context) {
+//     console.error(`Error in ${context}:`, error);
+//     // Implement error notification system here
+// }
 
 // Initialize Dashboard
 function initializeDashboard() {
@@ -123,6 +123,7 @@ function initializeDashboard() {
 document.addEventListener('DOMContentLoaded', initializeDashboard);
 
 // Export functions for potential module usage
+<<<<<<< HEAD
 export {
     initializeDashboard,
     updateGauge,
@@ -355,3 +356,12 @@ document.addEventListener("DOMContentLoaded", () => {
         showNotification("notification-2");
     }, 3000);
 });
+=======
+// export {
+//     initializeDashboard,
+//     updateGauge,
+//     updateTemperature,
+//     updateHistoricalData,
+//     refreshDashboardData
+// };
+>>>>>>> 23464e9a91a7c3d16d45e88c419e50dd700293ab
