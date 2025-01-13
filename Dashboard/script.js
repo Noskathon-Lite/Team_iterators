@@ -4,7 +4,6 @@ let meterValue = 90;
 let totalRot = ((meterValue / 100) * 180 * Math.PI) / 180;
 
 
-
 let rotation = 0;
 let doAnim = true;
 let canvas = null;
