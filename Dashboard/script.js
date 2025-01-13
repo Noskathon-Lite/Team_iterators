@@ -1,134 +1,332 @@
-//Changeeeeeee
-let meterValue = 90; 
 
-let totalRot = ((meterValue / 100) * 180 * Math.PI) / 180;
-
-
-
-let rotation = 0;
-let doAnim = true;
-let canvas = null;
-let ctx = null;
-let text = document.querySelector(".text");
-canvas = document.getElementById("canvas");
-ctx = canvas.getContext("2d");
-setTimeout(requestAnimationFrame(animate), 1500);
-
-function calcPointsCirc(cx, cy, rad, dashLength) {
-    var n = rad / dashLength,
-        alpha = (Math.PI * 2) / n,
-        pointObj = {},
-        points = [],
-        i = -1;
-
-    while (i < n) {
-        var theta = alpha * i,
-            theta2 = alpha * (i + 1);
-
-        points.push({
-            x: Math.cos(theta) * rad + cx,
-            y: Math.sin(theta) * rad + cy,
-            ex: Math.cos(theta2) * rad + cx,
-            ey: Math.sin(theta2) * rad + cy
+// Sidebar Navigation
+function initializeSidebar() {
+    document.querySelectorAll(".sidebar-icon").forEach((icon) => {
+        icon.addEventListener("click", function () {
+            document.querySelector(".sidebar-icon.active").classList.remove("active");
+            this.classList.add("active");
         });
-        i += 2;
-    }
-    return points;
+    });
 }
 
-function animate() {
-    //Clearing animation on every iteration
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const center = {
-        x: 175,
-        y: 175
-    };
-
-    //main arc
-    ctx.beginPath();
-    ctx.strokeStyle = rotation >= totalRot ? "#FF9421" : "#35FFFF";
-    ctx.lineWidth = "3";
-    let radius = 174;
-    ctx.arc(center.x, center.y, radius, Math.PI, Math.PI + rotation);
-    ctx.stroke();
-
-    //Red Arc
-    if (rotation <= (10 / 100) * Math.PI) { // 10% mapped to radians
-        ctx.beginPath();
-        ctx.strokeStyle = "#FF0000";
-        ctx.lineWidth = "3";
-        ctx.arc(center.x, center.y, radius, Math.PI, Math.PI + ((10 / 100) * Math.PI)); // Arc from 0% to 10%
-        ctx.stroke();
-    }
-
-    //functions to draw dotted lines
-    const DrawDottedLine = (x1, y1, x2, y2, dotRadius, dotCount, dotColor) => {
-        var dx = x2 - x1;
-        var dy = y2 - y1;
-        let slopeOfLine = dy / dx;
-        var degOfLine =
-            Math.atan(slopeOfLine) * (180 / Math.PI) > 0
-                ? Math.atan(slopeOfLine) * (180 / Math.PI)
-                : 180 + Math.atan(slopeOfLine) * (180 / Math.PI);
-        var degOfNeedle = rotation * (180 / Math.PI);
-
-        if (rotation <= (10 / 100) * Math.PI) {
-            dotColor = degOfLine <= degOfNeedle ? "#FF0000" : "#FF6666"; 
-        } else {
-            dotColor = degOfLine <= degOfNeedle ? dotColor : "#99CCFF";
-        }
-
-        var spaceX = dx / (dotCount - 1);
-        var spaceY = dy / (dotCount - 1);
-        var newX = x1;
-        var newY = y1;
-        for (var i = 0; i < dotCount; i++) {
-            dotRadius = dotRadius >= 0.75 ? dotRadius - i * (0.5 / 15) : dotRadius;
-            drawDot(newX, newY, dotRadius, `${dotColor}${100 - (i + 1)}`);
-            newX += spaceX;
-            newY += spaceY;
-        }
-    };
-    const drawDot = (x, y, dotRadius, dotColor) => {
-        ctx.beginPath();
-        ctx.arc(x, y, dotRadius, 0, 2 * Math.PI, false);
-        ctx.fillStyle = dotColor;
-        ctx.fill();
-    };
-    let firstDottedLineDots = calcPointsCirc(center.x, center.y, 165, 1);
-    for (let k = 0; k < firstDottedLineDots.length; k++) {
-        let x = firstDottedLineDots[k].x;
-        let y = firstDottedLineDots[k].y;
-        DrawDottedLine(x, y, 175, 175, 1.75, 30, "#FF0000");
-    }
-
-    //dummy circle to hide the line connecting to center
-    ctx.beginPath();
-    ctx.arc(center.x, center.y, 80, 2 * Math.PI, 0);
-    ctx.fillStyle = "";
-    ctx.fill();
-
-    //Speedometer triangle
-    var x = -75,
-        y = 0;
-    ctx.save();
-    ctx.beginPath();
-    ctx.translate(175, 175);
-    ctx.rotate(rotation);
-    ctx.moveTo(x, y);
-    ctx.lineTo(x + 10, y - 10);
-    ctx.lineTo(x + 10, y + 10);
-    ctx.closePath();
-    ctx.fillStyle = meterValue <= 10 ? "#FF0000" : "#35FFFF";
-    ctx.fill();
-    ctx.restore();
-    if (rotation < totalRot) {
-        rotation += (1 * Math.PI) / 180;
-        if (rotation > totalRot) {
-            rotation -= (1 * Math.PI) / 180;
-        }
-    }
-
-    text.innerHTML = Math.round((rotation / Math.PI) * 100) + 0 + "%";
-    requestAnimationFrame(animate);
+// Search Functionality
+function initializeSearch() {
+    const searchInput = document.querySelector(".search-container input");
+    searchInput.addEventListener("input", function (e) {
+        console.log("Searching for:", e.target.value);
+        // Implement search logic here
+    });
 }
+
+// Card Hover Effects
+function initializeCardHoverEffects() {
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mouseover', function() {
+            this.style.transform = 'translateY(-5px)';
+            this.style.transition = 'transform 0.3s ease';
+        });
+        
+        card.addEventListener('mouseout', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+}
+
+// Gauge Functionality
+function updateGauge(selector, value) {
+    const fill = document.querySelector(`${selector} .gauge-circle-fill`);
+    const display = document.querySelector(`${selector} .gauge-value`);
+    const rotation = (value / 100) * 180;
+    fill.style.transform = `rotate(${rotation}deg)`;
+    display.textContent = `${value}%`;
+}
+
+// Temperature Display
+function updateTemperature(value, unit = 'Celsius') {
+    const display = document.querySelector('.temperature-value');
+    const unitDisplay = document.querySelector('.temperature-unit');
+    display.textContent = `${value}°`;
+    unitDisplay.textContent = unit;
+}
+
+// Historical Data
+function updateHistoricalData(cardSelector, data) {
+    const historicalSection = document.querySelector(`${cardSelector} .historical-data`);
+    if (historicalSection && data) {
+        historicalSection.innerHTML = Object.entries(data)
+            .map(([time, value]) => `<p>${time}: ${value}%</p>`)
+            .join('');
+    }
+}
+
+// Notification System
+function initializeNotifications() {
+    const notificationBell = document.querySelector('.avatar svg[viewBox="0 0 24 24"]');
+    if (notificationBell) {
+        notificationBell.addEventListener('click', function() {
+            console.log('Opening notifications panel');
+            // Implement notification panel logic here
+        });
+    }
+}
+
+// Data Refresh
+function refreshDashboardData() {
+    // Simulate data updates
+    updateGauge('.metric-card:nth-child(1)', 90); // Moisture
+    updateGauge('.metric-card:nth-child(2)', 75); // Humidity
+    updateTemperature(24);
+    
+    const historicalData = {
+        'Last hour': '88',
+        '6 hours ago': '85',
+        '24 hours ago': '92'
+    };
+    updateHistoricalData('.metric-card:nth-child(1)', historicalData);
+}
+
+// Real-time Updates
+function startRealTimeUpdates() {
+    // Simulate real-time data updates every 30 seconds
+    setInterval(() => {
+        const randomMoisture = 85 + Math.random() * 10;
+        const randomHumidity = 70 + Math.random() * 10;
+        const randomTemp = 22 + Math.random() * 4;
+        
+        updateGauge('.metric-card:nth-child(1)', Math.round(randomMoisture));
+        updateGauge('.metric-card:nth-child(2)', Math.round(randomHumidity));
+        updateTemperature(Math.round(randomTemp * 10) / 10);
+    }, 30000);
+}
+
+// Error Handling
+function handleError(error, context) {
+    console.error(`Error in ${context}:`, error);
+    // Implement error notification system here
+}
+
+// Initialize Dashboard
+function initializeDashboard() {
+    try {
+        initializeSidebar();
+        initializeSearch();
+        initializeCardHoverEffects();
+        initializeNotifications();
+        refreshDashboardData();
+        startRealTimeUpdates();
+    } catch (error) {
+        handleError(error, 'dashboard initialization');
+    }
+}
+
+// Start the dashboard when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initializeDashboard);
+
+// Export functions for potential module usage
+export {
+    initializeDashboard,
+    updateGauge,
+    updateTemperature,
+    updateHistoricalData,
+    refreshDashboardData
+};
+
+
+
+
+//Update
+
+
+// Database Connection Configuration
+const dbConfig = {
+    host: 'your_host',
+    user: 'your_username',
+    password: 'your_password',
+    database: 'your_database'
+};
+
+// Fetch Data from Database
+async function fetchMetricsData() {
+    try {
+        // Example fetch call to your backend API
+        const response = await fetch('/api/metrics');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        handleError(error, 'data fetching');
+        return null;
+    }
+}
+
+// Pie Chart Functionality
+function updatePieChart(selector, value) {
+    const fill = document.querySelector(`${selector} .gauge-circle-fill`);
+    const display = document.querySelector(`${selector} .gauge-value`);
+    
+    // Calculate rotation based on percentage (360 degrees = 100%)
+    const rotation = (value / 100) * 360;
+    
+    // For values less than 50%
+    if (value <= 50) {
+        fill.style.transform = `rotate(${rotation}deg)`;
+        fill.style.backgroundColor = getColorForValue(value);
+        fill.style.clip = 'rect(0, 100px, 200px, 0)';
+    } 
+    // For values more than 50%
+    else {
+        // First half of the circle
+        fill.style.transform = 'rotate(180deg)';
+        fill.style.backgroundColor = getColorForValue(value);
+        fill.style.clip = 'rect(0, 100px, 200px, 0)';
+
+        // Create or update second half for values > 50%
+        let secondHalf = document.querySelector(`${selector} .gauge-circle-fill-2`);
+        if (!secondHalf) {
+            secondHalf = fill.cloneNode(true);
+            secondHalf.classList.add('gauge-circle-fill-2');
+            fill.parentNode.appendChild(secondHalf);
+        }
+        
+        // Rotate second half based on remaining percentage
+        const remainingRotation = ((value - 50) / 100) * 360;
+        secondHalf.style.transform = `rotate(${remainingRotation}deg)`;
+        secondHalf.style.backgroundColor = getColorForValue(value);
+        secondHalf.style.clip = 'rect(0, 100px, 200px, 0)';
+    }
+    
+    // Update the display value
+    display.textContent = `${Math.round(value)}%`;
+}
+
+// Get color based on value
+function getColorForValue(value) {
+    // Color gradient from red to yellow to green
+    if (value < 30) {
+        return '#ff4757'; // Red for low values
+    } else if (value < 70) {
+        return '#ffa502'; // Yellow for medium values
+    } else {
+        return '#2ed573'; // Green for high values
+    }
+}
+
+// Real-time Updates with Database Integration
+async function startRealTimeUpdates() {
+    try {
+        // Initial data load
+        const data = await fetchMetricsData();
+        if (data) {
+            updatePieChart('.metric-card:nth-child(1)', data.moisture);
+            updatePieChart('.metric-card:nth-child(2)', data.humidity);
+            updateTemperature(data.temperature);
+            updateHistoricalData('.metric-card:nth-child(1)', data.moistureHistory);
+        }
+
+        // Set up real-time updates
+        setInterval(async () => {
+            const newData = await fetchMetricsData();
+            if (newData) {
+                updatePieChart('.metric-card:nth-child(1)', newData.moisture);
+                updatePieChart('.metric-card:nth-child(2)', newData.humidity);
+                updateTemperature(newData.temperature);
+                updateHistoricalData('.metric-card:nth-child(1)', newData.moistureHistory);
+            }
+        }, 30000); // Update every 30 seconds
+    } catch (error) {
+        handleError(error, 'real-time updates');
+    }
+}
+
+// Add these styles to your CSS
+const pieChartStyles = `
+.gauge {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #f1f2f6;
+    overflow: hidden;
+}
+
+.gauge-circle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    clip: rect(0, 100px, 200px, 0);
+    border-radius: 50%;
+    transition: all 1s ease-in-out;
+}
+
+.gauge-circle-fill, .gauge-circle-fill-2 {
+    transform-origin: 100% 50%;
+    transition: all 1s ease-in-out;
+}
+
+.gauge-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    font-weight: bold;
+    color: #2d3436;
+    z-index: 2;
+}
+`;
+
+// Initialize Dashboard
+async function initializeDashboard() {
+    try {
+        // Add pie chart styles
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = pieChartStyles;
+        document.head.appendChild(styleSheet);
+
+        initializeSidebar();
+        initializeSearch();
+        initializeCardHoverEffects();
+        initializeNotifications();
+        await startRealTimeUpdates();
+    } catch (error) {
+        handleError(error, 'dashboard initialization');
+    }
+}
+
+// Example backend API endpoint (Node.js/Express)
+/*
+app.get('/api/metrics', async (req, res) => {
+    try {
+        const connection = await mysql.createConnection(dbConfig);
+        const [rows] = await connection.execute('SELECT * FROM metrics ORDER BY timestamp DESC LIMIT 1');
+        const [history] = await connection.execute('SELECT * FROM metrics ORDER BY timestamp DESC LIMIT 24');
+        
+        const moistureHistory = history.reduce((acc, row) => {
+            acc[formatTimestamp(row.timestamp)] = row.moisture;
+            return acc;
+        }, {});
+
+        res.json({
+            moisture: rows[0].moisture,
+            humidity: rows[0].humidity,
+            temperature: rows[0].temperature,
+            moistureHistory
+        });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+*/
+
+// Start the dashboard when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initializeDashboard);
+
+// Export functions for potential module usage
+export {
+    initializeDashboard,
+    updatePieChart,
+    updateTemperature,
+    updateHistoricalData,
+    fetchMetricsData
+};
