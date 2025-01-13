@@ -39,3 +39,22 @@ canvas {
       padding: 16px; /* Adjust padding if needed */
     }
   }
+  .forecast {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+.day {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+#suggestion {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #2c3e50;
+}
