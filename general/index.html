@@ -1,113 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather and Soil Information</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      max-width: 600px;
-      margin: auto;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather and Soil Information</title>
+    <link rel="stylesheet" href="style.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="cont">
+        <!-- Farming Techniques and Tips Section -->
+        <div class="section" id="farming-tips">
+            <h2>🌿 Farming Techniques and Tips</h2>
+          <div class="cultivation">
+            <!-- Rice Cultivation -->
+            <div class="crop-section">
+              <h3>🌾 Rice Cultivation</h3>
+              <img src="rice.jpg" alt="Rice Cultivation" class="section-image" />
+              <button onclick="window.open('https://www.jica.go.jp/activities/issues/agricul/approach/ku57pq00002m21du-att/handbook_01.pdf', '_blank')">Read More</button>
+            </div>
+          
+            <!-- Wheat Cultivation -->
+            <div class="crop-section">
+              <h3>🌾 Wheat Cultivation</h3>
+              <img src="wheat.jpg" alt="Wheat Cultivation" class="section-image" />
+              <button onclick="window.open('https://www.jica.go.jp/nepal/english/office/others/c8h0vm0000bjww96-att/tm_2.pdf', '_blank')">Read More</button>
+            </div>
+          
+            <!-- Maize Cultivation -->
+            <div class="crop-section">
+              <h3>🌽 Maize Cultivation</h3>
+              <img src="maize.jpg" alt="Maize Cultivation" class="section-image" />
+              <button onclick="window.open('https://www.jica.go.jp/activities/issues/agricul/approach/ku57pq00002m21du-att/handbook_03.pdf', '_blank')">Read More</button>
+            </div>
+          </div>
+        </div>
+      <!-- Daily Crop Fact Section -->
+      <div class="section" id="daily-crop-fact">
+        <h2> Daily Crop Fact:</h2>
+        <p id="crop-fact-content"><p>Do You Know?</p>
+        Rising temperatures have been linked to decreased productivity in major cereal crops. For instance, approximately 60% of the variations in wheat productivity are attributed to weather variability.</p>
+      </div>
+    </div>
+    <div class="container">
+    <!-- Input Form Section -->
+    <h1>Crop Recommendation System</h1>
+    <div class="input-group">
+        <input type="text" id="city" placeholder="Enter location" />
+        <button onclick="fetchData()">Recommend Crop</button>
+    </div>
+    <div id="results"></div>
+</div>
+
+    <script>
+     async function fetchData() {
+  const city = document.getElementById("city").value.trim();
+  const resultsDiv = document.getElementById("results");
+
+  if (!city) {
+    resultsDiv.innerHTML = '<div class="error">Please enter a city name!</div>';
+    return;
+  }
+
+  resultsDiv.innerHTML = '<div class="loading">Loading data...</div>';
+
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/getCropSuggestions?city=${encodeURIComponent(city)}`
+    );
+    const data = await response.json();
+
+    if (data.error) {
+      throw new Error(data.error);
     }
-    input {
-      padding: 10px;
-      width: calc(100% - 120px);
-      box-sizing: border-box;
+
+    let html = "";
+
+    // Location Section
+    if (data.city && data.latitude && data.longitude) {
+      html += `
+        <div class="section">
+          <h3>📍 Location Information</h3>
+          <p><strong>Place:</strong> ${data.city}</p>
+          <p><strong>Coordinates:</strong> ${data.latitude.toFixed(4)}°N, ${data.longitude.toFixed(4)}°E</p>
+        </div>
+      `;
     }
-    button {
-      padding: 10px 20px;
-      margin-left: 10px;
+
+    // Weather Section
+    if (data.temperature !== undefined && data.humidity !== undefined) {
+      html += `
+        <div class="section">
+          <h3>🌤️ Weather Conditions</h3>
+          <p><strong>Temperature:</strong> ${data.temperature}°C</p>
+          <p><strong>Humidity:</strong> ${data.humidity}%</p>
+        </div>
+      `;
     }
-    #results {
-      margin-top: 20px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      background: #f9f9f9;
+
+    // Soil Section
+    if (data.ph || data.parent_soil || data.clay || data.organic_matter) {
+      html += `
+        <div class="section">
+          <h3>🌱 Soil Information</h3>
+          ${data.ph ? `<p><strong>pH:</strong> ${data.ph}</p>` : ''}
+          ${data.parent_soil ? `<p><strong>Parent Soil:</strong> ${data.parent_soil}</p>` : ''}
+          ${data.clay ? `<p><strong>Clay Content:</strong> ${data.clay}</p>` : ''}
+          ${data.organic_matter ? `<p><strong>Organic Matter:</strong> ${data.organic_matter}</p>` : ''}
+          ${data.total_nitrogen ? `<p><strong>Total Nitrogen:</strong> ${data.total_nitrogen}</p>` : ''}
+          ${data.boron ? `<p><strong>Boron:</strong> ${data.boron}</p>` : ''}
+          ${data.p2o5 ? `<p><strong>P2O5:</strong> ${data.p2o5}</p>` : ''}
+          ${data.sand ? `<p><strong>Sand Content:</strong> ${data.sand}</p>` : ''}
+          ${data.zinc ? `<p><strong>Zinc:</strong> ${data.zinc}</p>` : ''}
+          ${data.potassium ? `<p><strong>Potassium:</strong> ${data.potassium}</p>` : ''}
+        </div>
+      `;
     }
-    h3 {
-      margin-bottom: 10px;
+
+    // Crop Recommendation Section
+    function getConfidenceColor(confidence) {
+  if (confidence >= 75) return '#4CAF50';  // Green for high confidence
+  if (confidence >= 50) return '#FFA726';  // Orange for medium confidence
+  return '#FF7043'; 
     }
-    p {
-      margin: 5px 0;
+
+    if (data.predictedCrop) {
+        try {
+    const recommendations = JSON.parse(data.predictedCrop);
+    html += `
+      <div class="section">
+        <h3>🌾 Crop Recommendations</h3>
+        <div class="recommendations">
+          ${recommendations.map(rec => `
+            <div class="recommendation" style="margin-bottom: 15px; padding: 10px; background: ${getConfidenceColor(rec.confidence)};">
+              <p style="margin: 5px 0">
+                <strong>Crop:</strong> ${rec.crop.charAt(0).toUpperCase() + rec.crop.slice(1)}
+              </p>
+              <p style="margin: 5px 0">
+                <strong>Success Probability:</strong> ${rec.confidence}%
+                <div style="width: 100%; background-color: #e0e0e0; height: 10px; border-radius: 5px; margin-top: 5px;">
+                  <div style="width: ${rec.confidence}%; background-color: ${getConfidenceColor(rec.confidence)}; height: 100%; border-radius: 5px;"></div>
+                </div>
+              </p>
+              <p style="margin: 5px 0">
+                <strong>Matching Conditions:</strong> ${rec.matching_features} out of 7
+              </p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } catch (error) {
+      html += `
+        <div class="section">
+          <h3>🌾 Crop Recommendation</h3>
+          <p><strong>Recommended Crop:</strong> ${data.predictedCrop}</p>
+        </div>
+      `;
     }
-    .error {
-      color: red;
-      font-weight: bold;
-    }
-  </style>
-</head>
-<body>
+}
 
-  <h1>Weather and Soil Information</h1>
-
-  <label for="city">Enter City Name:</label>
-  <input type="text" id="city" placeholder="Enter city" />
-  <button onclick="fetchData()">Get Info</button>
-
-  <div id="results"></div>
-
-  <script>
-    async function fetchData() {
-      const city = document.getElementById('city').value.trim();
-      if (!city) {
-        alert('Please enter a city!');
-        return;
-      }
-
-      document.getElementById('results').innerHTML = '<p>Loading...</p>';
-
-      try {
-        // Send request to backend API with city parameter
-        const response = await fetch(`http://localhost:3000/api/getCropSuggestions?city=${city}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch data. Please try again.');
-        }
-
-        const data = await response.json();
-
-        if (data.error) {
-          document.getElementById('results').innerHTML = `<p class="error">${data.error}</p>`;
-        } else {
-          // Display the location, weather, and soil data
-          let resultsHtml = `<h3>Location: ${city}</h3>`;
-          resultsHtml += `<p><strong>Latitude:</strong> ${data.location.lat}</p>`;
-          resultsHtml += `<p><strong>Longitude:</strong> ${data.location.lon}</p>`;
-
-          resultsHtml += `<h3>Weather</h3>`;
-          resultsHtml += `
-            <p><strong>Temperature:</strong> ${data.weather.main.temp} °C</p>
-            <p><strong>Condition:</strong> ${data.weather.weather[0].description}</p>
-            <p><strong>Humidity:</strong> ${data.weather.main.humidity}%</p>
-          `;
-
-          if (data.soil) {
-            resultsHtml += `<h3>Soil Information</h3>`;
-            resultsHtml += `
-              <p><strong>pH:</strong> ${data.soil.ph || 'N/A'}</p>
-              <p><strong>Potassium:</strong> ${data.soil.nutrients ? data.soil.nutrients.K : 'N/A'}</p>
-            `;
-          } else {
-            resultsHtml += `<p class="error">Soil data not available for this location.</p>`;
-          }
-
-          // Add crop suggestion to the result
-          if (data.predictedCrop) {
-            resultsHtml += `<h3>Suggested Crop</h3>`;
-            resultsHtml += `<p><strong>Recommended Crop:</strong> ${data.predictedCrop}</p>`;
-          }
-
-          document.getElementById('results').innerHTML = resultsHtml;
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-        document.getElementById('results').innerHTML = `<p class="error">An error occurred: ${error.message}</p>`;
-      }
-    }
-  </script>
-
-</body>
+    resultsDiv.innerHTML = html || '<div class="error">No data available for this location.</div>';
+  } catch (error) {
+    resultsDiv.innerHTML = `
+      <div class="error">
+        <strong>Error:</strong> ${error.message || "Failed to fetch data. Please try again."}
+      </div>
+    `;
+  }
+}
+    </script>
+  </body>
 </html>
