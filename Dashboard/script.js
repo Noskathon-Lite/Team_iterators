@@ -123,7 +123,6 @@ function initializeDashboard() {
 document.addEventListener('DOMContentLoaded', initializeDashboard);
 
 // Export functions for potential module usage
-<<<<<<< HEAD
 export {
     initializeDashboard,
     updateGauge,
@@ -356,7 +355,6 @@ document.addEventListener("DOMContentLoaded", () => {
         showNotification("notification-2");
     }, 3000);
 });
-=======
 // export {
 //     initializeDashboard,
 //     updateGauge,
@@ -364,4 +362,3 @@ document.addEventListener("DOMContentLoaded", () => {
 //     updateHistoricalData,
 //     refreshDashboardData
 // };
->>>>>>> 23464e9a91a7c3d16d45e88c419e50dd700293ab

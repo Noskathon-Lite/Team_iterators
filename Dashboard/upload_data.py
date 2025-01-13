@@ -7,11 +7,11 @@ db_config = {
     "host": "localhost",
     "user": "root",
     "password": "",
-    "database": "sensor_db"
+    "database": "Farmers"
 }
 
 # Arduino Serial port configuration
-serial_port = "COM10"  # Replace with your Arduino's COM port
+serial_port = "/dev/tty.usbmodem11301"  # Replace with your Arduino's COM port
 baud_rate = 9600       # Match the baud rate used in your Arduino code
 
 # Connect to the database
