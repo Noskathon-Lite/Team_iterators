@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Soil Moisture Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .data {
+            background-color: #fff;
+            padding: 20px;
+            margin: 50px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 50%;
+        }
+        .timestamp {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <h1>Latest Soil Moisture Data</h1>
+    <div class="data">
+        <h2>Moisture Level: {{ moisture }}</h2>
+        <p class="timestamp">Timestamp: {{ timestamp }}</p>
+    </div>
+</body>
+</html>

@@ -123,6 +123,240 @@ function initializeDashboard() {
 document.addEventListener('DOMContentLoaded', initializeDashboard);
 
 // Export functions for potential module usage
+<<<<<<< HEAD
+export {
+    initializeDashboard,
+    updateGauge,
+    updateTemperature,
+    updateHistoricalData,
+    refreshDashboardData
+};
+
+
+
+
+//Update
+
+
+// Database Connection Configuration
+const dbConfig = {
+    host: 'your_host',
+    user: 'your_username',
+    password: 'your_password',
+    database: 'your_database'
+};
+
+// Fetch Data from Database
+async function fetchMetricsData() {
+    try {
+        // Example fetch call to your backend API
+        const response = await fetch('/api/metrics');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        handleError(error, 'data fetching');
+        return null;
+    }
+}
+
+// Pie Chart Functionality
+function updatePieChart(selector, value) {
+    const fill = document.querySelector(`${selector} .gauge-circle-fill`);
+    const display = document.querySelector(`${selector} .gauge-value`);
+    
+    // Calculate rotation based on percentage (360 degrees = 100%)
+    const rotation = (value / 100) * 360;
+    
+    // For values less than 50%
+    if (value <= 50) {
+        fill.style.transform = `rotate(${rotation}deg)`;
+        fill.style.backgroundColor = getColorForValue(value);
+        fill.style.clip = 'rect(0, 100px, 200px, 0)';
+    } 
+    // For values more than 50%
+    else {
+        // First half of the circle
+        fill.style.transform = 'rotate(180deg)';
+        fill.style.backgroundColor = getColorForValue(value);
+        fill.style.clip = 'rect(0, 100px, 200px, 0)';
+
+        // Create or update second half for values > 50%
+        let secondHalf = document.querySelector(`${selector} .gauge-circle-fill-2`);
+        if (!secondHalf) {
+            secondHalf = fill.cloneNode(true);
+            secondHalf.classList.add('gauge-circle-fill-2');
+            fill.parentNode.appendChild(secondHalf);
+        }
+        
+        // Rotate second half based on remaining percentage
+        const remainingRotation = ((value - 50) / 100) * 360;
+        secondHalf.style.transform = `rotate(${remainingRotation}deg)`;
+        secondHalf.style.backgroundColor = getColorForValue(value);
+        secondHalf.style.clip = 'rect(0, 100px, 200px, 0)';
+    }
+    
+    // Update the display value
+    display.textContent = `${Math.round(value)}%`;
+}
+
+// Get color based on value
+function getColorForValue(value) {
+    // Color gradient from red to yellow to green
+    if (value < 30) {
+        return '#ff4757'; // Red for low values
+    } else if (value < 70) {
+        return '#ffa502'; // Yellow for medium values
+    } else {
+        return '#2ed573'; // Green for high values
+    }
+}
+
+// Real-time Updates with Database Integration
+async function startRealTimeUpdates() {
+    try {
+        // Initial data load
+        const data = await fetchMetricsData();
+        if (data) {
+            updatePieChart('.metric-card:nth-child(1)', data.moisture);
+            updatePieChart('.metric-card:nth-child(2)', data.humidity);
+            updateTemperature(data.temperature);
+            updateHistoricalData('.metric-card:nth-child(1)', data.moistureHistory);
+        }
+
+        // Set up real-time updates
+        setInterval(async () => {
+            const newData = await fetchMetricsData();
+            if (newData) {
+                updatePieChart('.metric-card:nth-child(1)', newData.moisture);
+                updatePieChart('.metric-card:nth-child(2)', newData.humidity);
+                updateTemperature(newData.temperature);
+                updateHistoricalData('.metric-card:nth-child(1)', newData.moistureHistory);
+            }
+        }, 30000); // Update every 30 seconds
+    } catch (error) {
+        handleError(error, 'real-time updates');
+    }
+}
+
+// Add these styles to your CSS
+const pieChartStyles = `
+.gauge {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background-color: #f1f2f6;
+    overflow: hidden;
+}
+
+.gauge-circle {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    clip: rect(0, 100px, 200px, 0);
+    border-radius: 50%;
+    transition: all 1s ease-in-out;
+}
+
+.gauge-circle-fill, .gauge-circle-fill-2 {
+    transform-origin: 100% 50%;
+    transition: all 1s ease-in-out;
+}
+
+.gauge-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    font-weight: bold;
+    color: #2d3436;
+    z-index: 2;
+}
+`;
+
+// Initialize Dashboard
+async function initializeDashboard() {
+    try {
+        // Add pie chart styles
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = pieChartStyles;
+        document.head.appendChild(styleSheet);
+
+        initializeSidebar();
+        initializeSearch();
+        initializeCardHoverEffects();
+        initializeNotifications();
+        await startRealTimeUpdates();
+    } catch (error) {
+        handleError(error, 'dashboard initialization');
+    }
+}
+
+// Example backend API endpoint (Node.js/Express)
+/*
+app.get('/api/metrics', async (req, res) => {
+    try {
+        const connection = await mysql.createConnection(dbConfig);
+        const [rows] = await connection.execute('SELECT * FROM metrics ORDER BY timestamp DESC LIMIT 1');
+        const [history] = await connection.execute('SELECT * FROM metrics ORDER BY timestamp DESC LIMIT 24');
+        
+        const moistureHistory = history.reduce((acc, row) => {
+            acc[formatTimestamp(row.timestamp)] = row.moisture;
+            return acc;
+        }, {});
+
+        res.json({
+            moisture: rows[0].moisture,
+            humidity: rows[0].humidity,
+            temperature: rows[0].temperature,
+            moistureHistory
+        });
+    } catch (error) {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+*/
+
+// Start the dashboard when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', initializeDashboard);
+
+// Export functions for potential module usage
+export {
+    initializeDashboard,
+    updatePieChart,
+    updateTemperature,
+    updateHistoricalData,
+    fetchMetricsData
+};
+// Function to show a notification
+function showNotification(notificationId) {
+    const notification = document.getElementById(notificationId);
+    notification.classList.remove("hidden"); // Show the notification
+    setTimeout(() => {
+        notification.classList.add("hidden"); // Hide the notification after 5 seconds
+    }, 5000);
+}
+
+// Function to close a notification
+function closeNotification(notificationId) {
+    const notification = document.getElementById(notificationId);
+    notification.classList.add("hidden");
+}
+
+// Example: Show notifications based on some data/events
+document.addEventListener("DOMContentLoaded", () => {
+    // Simulating a successful action (like form submission, data update, etc.)
+    showNotification("notification-1");
+
+    // Simulating an error (like a failed API request)
+    setTimeout(() => {
+        showNotification("notification-2");
+    }, 3000);
+});
+=======
 // export {
 //     initializeDashboard,
 //     updateGauge,
@@ -130,3 +364,4 @@ document.addEventListener('DOMContentLoaded', initializeDashboard);
 //     updateHistoricalData,
 //     refreshDashboardData
 // };
+>>>>>>> 23464e9a91a7c3d16d45e88c419e50dd700293ab
