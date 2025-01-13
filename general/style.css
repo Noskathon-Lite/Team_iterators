@@ -1,225 +1,233 @@
 body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #ffffff;
-  background-image: url(crop.jpg);
-  background-size: cover;
-  background-repeat: no-repeat;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    background-image: url(crop.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
 }
 
 .container {
-  max-width: 1200px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 10px;
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
 }
 
 h1 {
-  text-align: center;
-  color: #2c3e50;
+    text-align: center;
+    color: #2c3e50;
 }
 
 .input-group {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
 }
 
 input {
-  padding: 15px;
-  width: 70%;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  margin-right: 10px;
+    padding: 15px;
+    width: 70%;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
 }
 
 button {
-  padding: 15px 30px;
-  background-color: #128016;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: background-color 0.3s;
+    padding: 15px 30px;
+    background-color: #128016;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: #45a049;
+    background-color: #45a049;
 }
 
 .section {
-  margin-bottom: 30px;
-  padding: 20px;
-  background: #f9f9f9;
-  border-radius: 5px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
 }
 
 .section h3 {
-  margin-top: 0;
-  color: #333;
+    margin-top: 0;
+    color: #333;
 }
 
 .recommendation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  background: #e8f5e9;
-  border-radius: 5px;
-  margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #e8f5e9;
+    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .recommendation p {
-  margin: 0;
+    margin: 0;
 }
 
 .recommendation .progress-bar {
-  width: 60%;
-  height: 10px;
-  background: #c8e6c9;
-  border-radius: 5px;
-  margin-left: 10px;
+    width: 60%;
+    height: 10px;
+    background: #c8e6c9;
+    border-radius: 5px;
+    margin-left: 10px;
 }
 
 .recommendation .progress-bar .fill {
-  height: 100%;
-  border-radius: 5px;
+    height: 100%;
+    border-radius: 5px;
 }
 
 .recommendation .progress-bar .fill.high {
-  background: #4caf50;
+    background: #4caf50;
 }
 
 .recommendation .progress-bar .fill.medium {
-  background: #ff9800;
+    background: #ff9800;
 }
 
 .recommendation .progress-bar .fill.low {
-  background: #f44336;
+    background: #f44336;
 }
 
 .loading {
-  text-align: center;
-  padding: 20px;
-  color: #666;
+    text-align: center;
+    padding: 20px;
+    color: #666;
 }
 
 .error {
-  color: #f44336;
-  padding: 10px;
-  background-color: #f8d7da;
-  border-radius: 5px;
-  margin-top: 10px;
+    color: #f44336;
+    padding: 10px;
+    background-color: #f8d7da;
+    border-radius: 5px;
+    margin-top: 10px;
 }
+
+
 /* Farming Tips Section */
+
 #farming-tips {
-  background-color: #f9fbf9;
-  padding: 40px;
-  margin-bottom: 40px;
+    background-color: #f9fbf9;
+    padding: 40px;
+    margin-bottom: 40px;
 }
 
 #farming-tips h2 {
-  font-size: 2rem;
-  font-weight: 600;
-  color: #2c3e50;
-  text-align: center;
-  margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
 }
 
 .cultivation {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
 .crop-section {
-  background-color: none;
-  border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 30px;
-  transition: all 0.3s ease;
-  width: 30%;
-  box-sizing: border-box;
+    background-color: none;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    width: 30%;
+    box-sizing: border-box;
 }
 
 .crop-section:hover {
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .crop-section h3 {
-  font-size: 1rem;
-  color: #2c3e50;
-  margin-bottom: 15px;
+    font-size: 1rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
 }
 
 .crop-section img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover; /* Ensures the image covers the div */
-  border-radius: 8px;
-  margin-bottom: 20px;
-  transition: transform 0.3s ease;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    /* Ensures the image covers the div */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
 }
 
 .crop-section img:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .crop-section button {
-  padding: 2px 5px;
-  background-color: #4CAF50;
-  color: white;
-  font-size: 0.5rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  height: 5%;
-  width: 15%;
-  margin-left: 80%;
-  margin-top: 0;
+    padding: 2px 5px;
+    background-color: #4CAF50;
+    color: white;
+    font-size: 0.5rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 5%;
+    width: 15%;
+    margin-left: 80%;
+    margin-top: 0;
 }
 
 .crop-section button:hover {
-  background-color: #45a049;
+    background-color: #45a049;
 }
+
 
 /* Mobile Responsiveness */
+
 @media (max-width: 768px) {
-  #farming-tips h2 {
-    font-size: 1.8rem;
-  }
-
-  .crop-section {
-    padding: 15px;
-    width: 45%; /* Adjusted width for mobile */
-  }
-
-  .crop-section h3 {
-    font-size: 1.4rem;
-  }
+    #farming-tips h2 {
+        font-size: 1.8rem;
+    }
+    .crop-section {
+        padding: 15px;
+        width: 45%;
+        /* Adjusted width for mobile */
+    }
+    .crop-section h3 {
+        font-size: 1.4rem;
+    }
 }
+
+
 /* Daily Crop Fact Section */
+
 #daily-crop-fact {
-  padding: 20px;
-  margin: 20px 20;
-  border-radius: 8px;
-  content: center;
-  text-align: center;
+    padding: 20px;
+    margin: 20px 20;
+    border-radius: 8px;
+    content: center;
+    text-align: center;
 }
 
 #daily-crop-fact h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 10px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 10px;
 }
 
 #daily-crop-fact p {
-  font-size: 1rem;
-  color: #34495e;
-  line-height: 1.6;
+    font-size: 1rem;
+    color: #34495e;
+    line-height: 1.6;
 }
