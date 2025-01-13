@@ -1,109 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Weather and Soil Information</title>
     <link rel="stylesheet" href="style.css">
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="buttonhome">
+        <a href="../Team_iterators\index.html"></a>
+    </div>
     <div class="cont">
         <!-- Farming Techniques and Tips Section -->
         <div class="section" id="farming-tips">
             <h2>🌿 Farming Techniques and Tips</h2>
-          <div class="cultivation">
-            <!-- Rice Cultivation -->
-            <div class="crop-section">
-              <h3>🌾 Rice Cultivation</h3>
-              <img src="rice.jpg" alt="Rice Cultivation" class="section-image" />
-              <button onclick="window.open('https://www.jica.go.jp/activities/issues/agricul/approach/ku57pq00002m21du-att/handbook_01.pdf', '_blank')">Read More</button>
+            <div class="cultivation">
+                <!-- Rice Cultivation -->
+                <div class="crop-section">
+                    <h3>🌾 Rice Cultivation</h3>
+                    <img src="rice.jpg" alt="Rice Cultivation" class="section-image" />
+                    <button onclick="window.open('https://www.jica.go.jp/activities/issues/agricul/approach/ku57pq00002m21du-att/handbook_01.pdf', '_blank')">Read More</button>
+                </div>
+
+                <!-- Wheat Cultivation -->
+                <div class="crop-section">
+                    <h3>🌾 Wheat Cultivation</h3>
+                    <img src="wheat.jpg" alt="Wheat Cultivation" class="section-image" />
+                    <button onclick="window.open('https://www.jica.go.jp/nepal/english/office/others/c8h0vm0000bjww96-att/tm_2.pdf', '_blank')">Read More</button>
+                </div>
+
+                <!-- Maize Cultivation -->
+                <div class="crop-section">
+                    <h3>🌽 Maize Cultivation</h3>
+                    <img src="maize.jpg" alt="Maize Cultivation" class="section-image" />
+                    <button onclick="window.open('https://www.jica.go.jp/activities/issues/agricul/approach/ku57pq00002m21du-att/handbook_03.pdf', '_blank')">Read More</button>
+                </div>
             </div>
-          
-            <!-- Wheat Cultivation -->
-            <div class="crop-section">
-              <h3>🌾 Wheat Cultivation</h3>
-              <img src="wheat.jpg" alt="Wheat Cultivation" class="section-image" />
-              <button onclick="window.open('https://www.jica.go.jp/nepal/english/office/others/c8h0vm0000bjww96-att/tm_2.pdf', '_blank')">Read More</button>
-            </div>
-          
-            <!-- Maize Cultivation -->
-            <div class="crop-section">
-              <h3>🌽 Maize Cultivation</h3>
-              <img src="maize.jpg" alt="Maize Cultivation" class="section-image" />
-              <button onclick="window.open('https://www.jica.go.jp/activities/issues/agricul/approach/ku57pq00002m21du-att/handbook_03.pdf', '_blank')">Read More</button>
-            </div>
-          </div>
         </div>
-      <!-- Daily Crop Fact Section -->
-      <div class="section" id="daily-crop-fact">
-        <h2> Daily Crop Fact:</h2>
-        <p id="crop-fact-content"><p>Do You Know?</p>
-        Rising temperatures have been linked to decreased productivity in major cereal crops. For instance, approximately 60% of the variations in wheat productivity are attributed to weather variability.</p>
-      </div>
+        <!-- Daily Crop Fact Section -->
+        <div class="section" id="daily-crop-fact">
+            <h2> Daily Crop Fact:</h2>
+            <p id="crop-fact-content">
+                <p>Do You Know?</p>
+                Rising temperatures have been linked to decreased productivity in major cereal crops. For instance, approximately 60% of the variations in wheat productivity are attributed to weather variability.</p>
+        </div>
     </div>
     <div class="container">
-    <!-- Input Form Section -->
-    <h1>Crop Recommendation System</h1>
-    <div class="input-group">
-        <input type="text" id="city" placeholder="Enter location" />
-        <button onclick="fetchData()">Recommend Crop</button>
+        <!-- Input Form Section -->
+        <h1>Crop Recommendation System</h1>
+        <div class="input-group">
+            <input type="text" id="city" placeholder="Enter location" />
+            <button onclick="fetchData()">Recommend Crop</button>
+        </div>
+        <div id="results"></div>
     </div>
-    <div id="results"></div>
-</div>
 
     <script>
-     async function fetchData() {
-  const city = document.getElementById("city").value.trim();
-  const resultsDiv = document.getElementById("results");
+        async function fetchData() {
+            const city = document.getElementById("city").value.trim();
+            const resultsDiv = document.getElementById("results");
 
-  if (!city) {
-    resultsDiv.innerHTML = '<div class="error">Please enter a city name!</div>';
-    return;
-  }
+            if (!city) {
+                resultsDiv.innerHTML = '<div class="error">Please enter a city name!</div>';
+                return;
+            }
 
-  resultsDiv.innerHTML = '<div class="loading">Loading data...</div>';
+            resultsDiv.innerHTML = '<div class="loading">Loading data...</div>';
 
-  try {
-    const response = await fetch(
-      `http://localhost:3000/api/getCropSuggestions?city=${encodeURIComponent(city)}`
-    );
-    const data = await response.json();
+            try {
+                const response = await fetch(
+                    `http://localhost:3000/api/getCropSuggestions?city=${encodeURIComponent(city)}`
+                );
+                const data = await response.json();
 
-    if (data.error) {
-      throw new Error(data.error);
-    }
+                if (data.error) {
+                    throw new Error(data.error);
+                }
 
-    let html = "";
+                let html = "";
 
-    // Location Section
-    if (data.city && data.latitude && data.longitude) {
-      html += `
+                // Location Section
+                if (data.city && data.latitude && data.longitude) {
+                    html += `
         <div class="section">
           <h3>📍 Location Information</h3>
           <p><strong>Place:</strong> ${data.city}</p>
           <p><strong>Coordinates:</strong> ${data.latitude.toFixed(4)}°N, ${data.longitude.toFixed(4)}°E</p>
         </div>
       `;
-    }
+                }
 
-    // Weather Section
-    if (data.temperature !== undefined && data.humidity !== undefined) {
-      html += `
+                // Weather Section
+                if (data.temperature !== undefined && data.humidity !== undefined) {
+                    html += `
         <div class="section">
           <h3>🌤️ Weather Conditions</h3>
           <p><strong>Temperature:</strong> ${data.temperature}°C</p>
           <p><strong>Humidity:</strong> ${data.humidity}%</p>
         </div>
       `;
-    }
+                }
 
-    // Soil Section
-    if (data.ph || data.parent_soil || data.clay || data.organic_matter) {
-      html += `
+                // Soil Section
+                if (data.ph || data.parent_soil || data.clay || data.organic_matter) {
+                    html += `
         <div class="section">
           <h3>🌱 Soil Information</h3>
           ${data.ph ? `<p><strong>pH:</strong> ${data.ph}</p>` : ''}
@@ -173,5 +176,6 @@
   }
 }
     </script>
-  </body>
+</body>
+
 </html>
