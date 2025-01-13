@@ -124,6 +124,64 @@
 }
 
 
+/* General and Top Roof Sections */
+
+#general-farm,
+#top-roof-farm {
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #f1f9ff, #d9e4f1);
+}
+
+#general-farm .container,
+#top-roof-farm .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+}
+
+#general-farm h2,
+#top-roof-farm h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+#general-farm p,
+#top-roof-farm p {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+    margin-bottom: 30px;
+}
+
+#general-farm .btn,
+#top-roof-farm .btn {
+    background-color: #f39c12;
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+#general-farm .btn:hover,
+#top-roof-farm .btn:hover {
+    background-color: #e67e22;
+}
+
+#general-farm img,
+#top-roof-farm img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+
 /* Features Section Styles */
 
 .features {
@@ -217,17 +275,14 @@
         display: flex;
         gap: 1rem;
         position: static;
-        /* Remove fixed positioning */
         height: auto;
         width: auto;
         background: transparent;
         flex-direction: row;
-        /* Keep horizontal layout */
         padding: 0;
     }
     .nav-links a {
         font-size: 0.9rem;
-        /* Slightly smaller font size on mobile */
         padding: 0.3rem 0;
     }
     .nav-buttons {
@@ -241,7 +296,6 @@
         grid-template-columns: 1fr;
         padding: 0 1rem;
     }
-    /* Adjust container padding for mobile */
     .navbar .container {
         padding: 0 1rem;
     }
