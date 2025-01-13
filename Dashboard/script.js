@@ -330,3 +330,28 @@ export {
     updateHistoricalData,
     fetchMetricsData
 };
+// Function to show a notification
+function showNotification(notificationId) {
+    const notification = document.getElementById(notificationId);
+    notification.classList.remove("hidden"); // Show the notification
+    setTimeout(() => {
+        notification.classList.add("hidden"); // Hide the notification after 5 seconds
+    }, 5000);
+}
+
+// Function to close a notification
+function closeNotification(notificationId) {
+    const notification = document.getElementById(notificationId);
+    notification.classList.add("hidden");
+}
+
+// Example: Show notifications based on some data/events
+document.addEventListener("DOMContentLoaded", () => {
+    // Simulating a successful action (like form submission, data update, etc.)
+    showNotification("notification-1");
+
+    // Simulating an error (like a failed API request)
+    setTimeout(() => {
+        showNotification("notification-2");
+    }, 3000);
+});

@@ -330,6 +330,53 @@
     .sidebar-icon {
       cursor: pointer;
     }
+    /* Notification styles */
+    .hiden{
+        display: none;
+    }
+ 
+#notification {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 20px;
+    color: white;
+    font-size: 16px;
+    border-radius: 5px;
+    width: 300px;
+}
+
+.bg-red {
+    background-color: red;
+}
+
+.bg-orange {
+    background-color: orange;
+}
+
+.bg-yellow {
+    background-color: yellow;
+}
+
+.bg-blue {
+    background-color: blue;
+}
+
+.bg-green {
+    background-color: green;
+}
+
+.btn {
+    margin-top: 10px;
+    padding: 5px 10px;
+    background-color: gray;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+
+
            </style>
   </head>
   <body>
@@ -407,7 +454,7 @@
           <div class="gauge">
             <div class="gauge-circle"></div>
             <div class="gauge-circle gauge-circle-fill"></div>
-            <div class="gauge-value">0%</div>
+            <div class="gauge-value" id="moisture">0%</div>
           </div>
           <div class="historical-data">
             <p>Last hour: 88%</p>
@@ -429,7 +476,7 @@
           <div class="gauge">
             <div class="gauge-circle"></div>
             <div class="gauge-circle gauge-circle-fill"></div>
-            <div class="gauge-value">75%</div>
+            <div class="gauge-value" id="ḧumidity">75%</div>
           </div>
         </div>
 
@@ -444,8 +491,8 @@
             </h2>
           </div>
           <div class="temperature-display">
-            <div class="temperature-value">24°</div>
-            <div class="temperature-unit">Celsius</div>
+            <div class="temperature-value">84°</div>
+            <div class="temperature-unit" id="temperature">Celsius</div>
           </div>
         </div>
       </div>
@@ -462,6 +509,14 @@
       </div>
     </div>
     </div>
+
+    <div id="notification" class="hidden">
+      <p id="notificationMessage"></p>
+      <button id="closeBtn" class="btn">Cancel</button>
+    </div>
+
+
+
 
     <script>
        function scrollToWeather() {
@@ -538,10 +593,11 @@
                 alert(error.message);
             }
         }
-        
-    </script>
+     </script>
 
     <script src="script.js"></script>
+    <script src="notification.js"></script>
+    
 </main>
 </div>
 </body>
