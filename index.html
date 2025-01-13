@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming and Crop Price Tracker</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header Section -->
+    <header class="bg-green-700 text-white sticky top-0 z-10 shadow-md">
+        <div class="container mx-auto flex justify-between items-center py-4 px-6">
+            <h1 class="text-2xl font-bold">Smart Farming</h1>
+            <nav>
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="hover:underline">Home</a></li>
+                    <li><a href="#features" class="hover:underline">Features</a></li>
+                    <li><a href="#price-tracker" class="hover:underline">Price Tracker</a></li>
+                    <li><a href="#contact" class="hover:underline">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="relative w-full h-screen">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+        <div id="slider-wrapper" class="overflow-hidden w-full h-full relative">
+            <div id="slider" class="flex w-max h-full">
+                <div class="slide bg-cover bg-center w-full h-full" style="background-image: url('./image5.jpg');"></div>
+                <div class="slide bg-cover bg-center w-full h-full" style="background-image: url('./image2.jpg');"></div>
+                <div class="slide bg-cover bg-center w-full h-full" style="background-image: url('./image3.jpg');"></div>
+                <!-- Add more slides here as needed -->
+            </div>
+        </div>
+        <div class="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
+            <h2 class="text-5xl font-extrabold mb-4">Empower Your Farm with Technology</h2>
+            <p class="text-xl mb-6">Optimize your farming practices and boost profitability with real-time insights and smart solutions.</p>
+            <a href="#features" class="bg-green-700 py-2 px-6 rounded text-white hover:bg-green-800">Learn More</a>
+        </div>
+    </section>
+
+
+    <!-- Features Section -->
+    <section id="features" class="bg-gray-100 py-12">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-6">Key Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white shadow p-6 rounded-lg text-center">
+                    <h3 class="text-xl font-semibold">Soil Monitoring</h3>
+                    <p class="text-gray-600 mt-2">Track moisture, pH, and nutrients for optimal crop growth.</p>
+                </div>
+                <div class="bg-white shadow p-6 rounded-lg text-center">
+                    <h3 class="text-xl font-semibold">Weather Insights</h3>
+                    <p class="text-gray-600 mt-2">Receive updates on rainfall, temperature, and humidity.</p>
+                </div>
+                <div class="bg-white shadow p-6 rounded-lg text-center">
+                    <h3 class="text-xl font-semibold">AI Recommendations</h3>
+                    <p class="text-gray-600 mt-2">Get precise advice on crop selection and resource use.</p>
+                </div>
+                <div class="bg-white shadow p-6 rounded-lg text-center">
+                    <h3 class="text-xl font-semibold">Market Trends</h3>
+                    <p class="text-gray-600 mt-2">Analyze real-time crop prices and maximize profitability.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Tracker Section -->
+    <section id="price-tracker" class="bg-white py-12">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-6 text-center">Real-Time Crop Price Tracker</h2>
+            <table class="table-auto w-full border-collapse border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="py-2 px-4 border">Crop</th>
+                        <th class="py-2 px-4 border">Current Price</th>
+                        <th class="py-2 px-4 border">Market</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="py-2 px-4 border">Wheat</td>
+                        <td class="py-2 px-4 border">$150/ton</td>
+                        <td class="py-2 px-4 border">Local Market</td>
+                    </tr>
+                    <tr class="bg-gray-100">
+                        <td class="py-2 px-4 border">Corn</td>
+                        <td class="py-2 px-4 border">$120/ton</td>
+                        <td class="py-2 px-4 border">City Market</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 border">Rice</td>
+                        <td class="py-2 px-4 border">$180/ton</td>
+                        <td class="py-2 px-4 border">Regional Market</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="bg-gray-100 py-12">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-6 text-center">Contact Us</h2>
+            <form class="max-w-xl mx-auto bg-white shadow-md p-6 rounded-lg">
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2" for="name">Name</label>
+                    <input type="text" id="name" class="w-full border-gray-300 rounded p-2" placeholder="Your Name">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2" for="email">Email</label>
+                    <input type="email" id="email" class="w-full border-gray-300 rounded p-2" placeholder="Your Email">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 mb-2" for="message">Message</label>
+                    <textarea id="message" class="w-full border-gray-300 rounded p-2" rows="4" placeholder="Your Message"></textarea>
+                </div>
+                <button type="submit" class="bg-green-700 text-white py-2 px-4 rounded hover:bg-green-800">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-green-700 text-white py-4 text-center">
+        <p>&copy; 2025 Smart Farming. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+/* Slider container setup */
+
+#slider {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    /* Hide slides that are out of view */
+    width: 100%;
+    /* Full width of the viewport */
+}
+
+
+/* Each slide setup */
+
+.slide {
+    flex: 0 0 100%;
+    /* Each slide should take 100% of the container's width */
+    height: 100vh;
+    /* Each slide should fill the screen's height */
+    background-size: cover;
+    background-position: center;
+}
